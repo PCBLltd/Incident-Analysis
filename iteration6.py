@@ -24,7 +24,42 @@ def separate_date_time(created_time):
     except ValueError:
         return None, None
 
+# def preprocess_data(data):
+#     data[['Creation Date', 'Creation Time']] = data['Created Time'].apply(separate_date_time).apply(pd.Series)
+#     summary_df = pd.DataFrame(columns=['Site', 'Creation Date', 'Total Tokens', 'Low', 'Medium (SAP) - 16 Hrs', 'No Inputs', 'Low (SAP) - 40 Hrs', 'Critical', 'Medium', 'High', 'High (SAP) - 6 Hrs', 'Very High (SAP) - 2 Hrs'])
+
+#     unique_dates = data['Creation Date'].unique()
+#     for date in unique_dates:
+#         date_df = data[data['Creation Date'] == date]
+#         if not date_df.empty:
+#             if 'No Inputs' in date_df.columns:
+#                 date_df = date_df[date_df['No Inputs'] != 'No Input']
+#             total_tokens = len(date_df)
+#             priority_counts = date_df[date_df['Priority'] != 'No Input']['Priority'].value_counts().reindex(features, fill_value=0)
+#             new_row = pd.DataFrame([{
+#                 'Site': date_df['Site'].iloc[0],
+#                 'Creation Date': date,
+#                 'Total Tokens': total_tokens,
+#                 'Low': priority_counts.get('Low', 0),
+#                 'Medium (SAP) - 16 Hrs': priority_counts.get('Medium (SAP) - 16 Hrs', 0),
+#                 'No Inputs': 0,
+#                 'Low (SAP) - 40 Hrs': priority_counts.get('Low (SAP) - 40 Hrs', 0),
+#                 'Critical': priority_counts.get('Critical', 0),
+#                 'Medium': priority_counts.get('Medium', 0),
+#                 'High': priority_counts.get('High', 0),
+#                 'High (SAP) - 6 Hrs': priority_counts.get('High (SAP) - 6 Hrs', 0),
+#                 'Very High (SAP) - 2 Hrs': priority_counts.get('Very High (SAP) - 2 Hrs', 0)
+#             }])
+#             summary_df = pd.concat([summary_df, new_row], ignore_index=True)
+#     for location in summary_df['Site'].unique():
+#         location_df = summary_df[summary_df['Site'] == location]
+#         location_df.to_csv(f'token_summary_{location}.csv', index=False)
+#     return summary_df
+
 def preprocess_data(data):
+    # Skip the first 5 rows if present
+    #data = data.iloc[5:, :].reset_index(drop=True)
+
     data[['Creation Date', 'Creation Time']] = data['Created Time'].apply(separate_date_time).apply(pd.Series)
     summary_df = pd.DataFrame(columns=['Site', 'Creation Date', 'Total Tokens', 'Low', 'Medium (SAP) - 16 Hrs', 'No Inputs', 'Low (SAP) - 40 Hrs', 'Critical', 'Medium', 'High', 'High (SAP) - 6 Hrs', 'Very High (SAP) - 2 Hrs'])
 
@@ -56,8 +91,10 @@ def preprocess_data(data):
         location_df.to_csv(f'token_summary_{location}.csv', index=False)
     return summary_df
 
+
 # Function to preprocess data for new categories
 def preprocess_data_new(data):
+    #data = data.iloc[5:, :].reset_index(drop=True)
     data[['Creation Date', 'Creation Time']] = data['Created Time'].apply(separate_date_time).apply(pd.Series)
     summary_df = pd.DataFrame(columns=['Site', 'Creation Date'] + categories)
 
@@ -144,11 +181,37 @@ def main():
 # Page 1: Upload Data and Preprocess
 def page_upload_data():
     st.header("Upload Data and Preprocess")
+    st.markdown("### Disclaimer:")
+    st.markdown("Please ensure that the uploaded CSV file follows the correct format. Any deviation may lead to errors.")
+    
+    st.markdown("### CSV File Structure:")
+    st.markdown("The CSV file should have the following structure:")
+    st.markdown("1. **RequestID**: Unique identifier for each request (integer).")
+    st.markdown("2. **Requester**: Name of the requester (string).")
+    st.markdown("3. **Subject**: Subject of the request (string).")
+    st.markdown("4. **Technician**: Name of the technician handling the request (string).")
+    st.markdown("5. **Site**: Location or site of the request (string).")
+    st.markdown("6. **IT Engineer / SPOC**: IT engineer or single point of contact (string).")
+    st.markdown("7. **Accountable IT SPOC / Consultant**: Accountable IT SPOC or consultant (string).")
+    st.markdown("8. **Approval Status**: Status of approval for the request (string).")
+    st.markdown("9. **Category**: Category of the request (string).")
+    st.markdown("10. **Sub Category**: Sub-category of the request (string).")
+    st.markdown("11. **Item**: Specific item related to the request (string).")
+    st.markdown("12. **Request Status**: Current status of the request (string).")
+    st.markdown("13. **Created Time**: Date and time when the request was created (format: 'dd-mm-yyyy hh:mm').")
+    st.markdown("14. **Completed Time**: Date and time when the request was completed (format: 'dd-mm-yyyy hh:mm').")
+    st.markdown("15. **Resolved Time**: Date and time when the request was resolved (format: 'dd-mm-yyyy hh:mm').")
+    st.markdown("16. **Resolved By**: Person who resolved the request (string).")
+    st.markdown("17. **Priority**: Priority level of the request (string).")
+    st.markdown("18. **Time Elapsed**: Time taken to resolve the request (string).")
+    st.markdown("19. **Template**: Template used for the request (string).")
 
     uploaded_file = st.file_uploader("Choose a CSV file", type=["csv"])
-
+    
     if uploaded_file is not None:
         data = pd.read_csv(uploaded_file)
+
+        
 
         # Preprocess data
         summary_data = preprocess_data(data)
@@ -268,7 +331,7 @@ def page_winsorized_mean_time():
     if uploaded_file is not None:
         # Load the dataset
         df = pd.read_csv(uploaded_file)
-        
+        df = df.iloc[5:, :].reset_index(drop=True)
         # Append previous data if available
         prev_file = st.file_uploader("Upload previous dataset to append (optional)", type="csv")
         if prev_file is not None:
@@ -323,12 +386,37 @@ def page_winsorized_mean_time():
 # Page 4: Upload Data and Preprocess for New Categories
 def page_upload_data_new():
     st.header("Upload Data and Preprocess for New Categories")
+    st.markdown("### Disclaimer:")
+    st.markdown("Please ensure that the uploaded CSV file follows the correct format. Any deviation may lead to errors.")
+    
+    st.markdown("### CSV File Structure:")
+    st.markdown("The CSV file should have the following structure:")
+    st.markdown("1. **RequestID**: Unique identifier for each request (integer).")
+    st.markdown("2. **Requester**: Name of the requester (string).")
+    st.markdown("3. **Subject**: Subject of the request (string).")
+    st.markdown("4. **Technician**: Name of the technician handling the request (string).")
+    st.markdown("5. **Site**: Location or site of the request (string).")
+    st.markdown("6. **IT Engineer / SPOC**: IT engineer or single point of contact (string).")
+    st.markdown("7. **Accountable IT SPOC / Consultant**: Accountable IT SPOC or consultant (string).")
+    st.markdown("8. **Approval Status**: Status of approval for the request (string).")
+    st.markdown("9. **Category**: Category of the request (string).")
+    st.markdown("10. **Sub Category**: Sub-category of the request (string).")
+    st.markdown("11. **Item**: Specific item related to the request (string).")
+    st.markdown("12. **Request Status**: Current status of the request (string).")
+    st.markdown("13. **Created Time**: Date and time when the request was created (format: 'dd-mm-yyyy hh:mm').")
+    st.markdown("14. **Completed Time**: Date and time when the request was completed (format: 'dd-mm-yyyy hh:mm').")
+    st.markdown("15. **Resolved Time**: Date and time when the request was resolved (format: 'dd-mm-yyyy hh:mm').")
+    st.markdown("16. **Resolved By**: Person who resolved the request (string).")
+    st.markdown("17. **Priority**: Priority level of the request (string).")
+    st.markdown("18. **Time Elapsed**: Time taken to resolve the request (string).")
+    st.markdown("19. **Template**: Template used for the request (string).")
 
     uploaded_file = st.file_uploader("Choose a CSV file", type=["csv"])
-
+    
     if uploaded_file is not None:
+       
         data = pd.read_csv(uploaded_file)
-
+        
         # Preprocess data for new categories
         summary_data = preprocess_data_new(data)
         st.write("Data Preprocessed Successfully for New Categories")
