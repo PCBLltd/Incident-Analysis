@@ -181,30 +181,21 @@ def main():
 # Page 1: Upload Data and Preprocess
 def page_upload_data():
     st.header("Upload Data and Preprocess")
+
+    sample_file_path = 'sample_Data.csv'
+    if os.path.exists(sample_file_path):
+        with open(sample_file_path, "rb") as f:
+            st.download_button(
+                label="Download Sample Dataset",
+                data=f,
+                file_name='sample_dataset.csv',
+                mime='text/csv'
+            )
+
     st.markdown("### Disclaimer:")
-    st.markdown("Please ensure that the uploaded CSV file follows the correct format. Any deviation may lead to errors.")
+    st.markdown("Please ensure that the uploaded CSV file follows the correct format , as mentioned in the sample data provided. Any deviation may lead to errors.")
     
-    st.markdown("### CSV File Structure:")
-    st.markdown("The CSV file should have the following structure:")
-    st.markdown("1. **RequestID**: Unique identifier for each request (integer).")
-    st.markdown("2. **Requester**: Name of the requester (string).")
-    st.markdown("3. **Subject**: Subject of the request (string).")
-    st.markdown("4. **Technician**: Name of the technician handling the request (string).")
-    st.markdown("5. **Site**: Location or site of the request (string).")
-    st.markdown("6. **IT Engineer / SPOC**: IT engineer or single point of contact (string).")
-    st.markdown("7. **Accountable IT SPOC / Consultant**: Accountable IT SPOC or consultant (string).")
-    st.markdown("8. **Approval Status**: Status of approval for the request (string).")
-    st.markdown("9. **Category**: Category of the request (string).")
-    st.markdown("10. **Sub Category**: Sub-category of the request (string).")
-    st.markdown("11. **Item**: Specific item related to the request (string).")
-    st.markdown("12. **Request Status**: Current status of the request (string).")
-    st.markdown("13. **Created Time**: Date and time when the request was created (format: 'dd-mm-yyyy hh:mm').")
-    st.markdown("14. **Completed Time**: Date and time when the request was completed (format: 'dd-mm-yyyy hh:mm').")
-    st.markdown("15. **Resolved Time**: Date and time when the request was resolved (format: 'dd-mm-yyyy hh:mm').")
-    st.markdown("16. **Resolved By**: Person who resolved the request (string).")
-    st.markdown("17. **Priority**: Priority level of the request (string).")
-    st.markdown("18. **Time Elapsed**: Time taken to resolve the request (string).")
-    st.markdown("19. **Template**: Template used for the request (string).")
+   
 
     uploaded_file = st.file_uploader("Choose a CSV file", type=["csv"])
     
@@ -386,30 +377,19 @@ def page_winsorized_mean_time():
 # Page 4: Upload Data and Preprocess for New Categories
 def page_upload_data_new():
     st.header("Upload Data and Preprocess for New Categories")
+    sample_file_path = 'sample_Data.csv'
+    if os.path.exists(sample_file_path):
+        with open(sample_file_path, "rb") as f:
+            st.download_button(
+                label="Download Sample Dataset",
+                data=f,
+                file_name='sample_dataset.csv',
+                mime='text/csv'
+            )
     st.markdown("### Disclaimer:")
-    st.markdown("Please ensure that the uploaded CSV file follows the correct format. Any deviation may lead to errors.")
+    st.markdown("Please ensure that the uploaded CSV file follows the correct format,as mentioned in the sample data provided. Any deviation may lead to errors.")
     
-    st.markdown("### CSV File Structure:")
-    st.markdown("The CSV file should have the following structure:")
-    st.markdown("1. **RequestID**: Unique identifier for each request (integer).")
-    st.markdown("2. **Requester**: Name of the requester (string).")
-    st.markdown("3. **Subject**: Subject of the request (string).")
-    st.markdown("4. **Technician**: Name of the technician handling the request (string).")
-    st.markdown("5. **Site**: Location or site of the request (string).")
-    st.markdown("6. **IT Engineer / SPOC**: IT engineer or single point of contact (string).")
-    st.markdown("7. **Accountable IT SPOC / Consultant**: Accountable IT SPOC or consultant (string).")
-    st.markdown("8. **Approval Status**: Status of approval for the request (string).")
-    st.markdown("9. **Category**: Category of the request (string).")
-    st.markdown("10. **Sub Category**: Sub-category of the request (string).")
-    st.markdown("11. **Item**: Specific item related to the request (string).")
-    st.markdown("12. **Request Status**: Current status of the request (string).")
-    st.markdown("13. **Created Time**: Date and time when the request was created (format: 'dd-mm-yyyy hh:mm').")
-    st.markdown("14. **Completed Time**: Date and time when the request was completed (format: 'dd-mm-yyyy hh:mm').")
-    st.markdown("15. **Resolved Time**: Date and time when the request was resolved (format: 'dd-mm-yyyy hh:mm').")
-    st.markdown("16. **Resolved By**: Person who resolved the request (string).")
-    st.markdown("17. **Priority**: Priority level of the request (string).")
-    st.markdown("18. **Time Elapsed**: Time taken to resolve the request (string).")
-    st.markdown("19. **Template**: Template used for the request (string).")
+
 
     uploaded_file = st.file_uploader("Choose a CSV file", type=["csv"])
     
