@@ -50,6 +50,8 @@ debugpy==1.8.0
 decorator==5.1.1
 defusedxml==0.7.1
 deprecation==2.1.0
+diffuser==0.0.1
+diffusers==0.29.2
 Django==5.0
 dnspython==2.6.1
 docx==0.2.4
@@ -96,7 +98,7 @@ h5py==3.11.0
 holidays==0.51
 html5lib==1.1
 htmlmin==0.1.12
-huggingface-hub==0.20.1
+huggingface-hub==0.23.4
 ibapi==9.81.1.post1
 idna==3.4
 ImageHash==4.3.1
